@@ -1,0 +1,31 @@
+/* body {
+  padding: 0;
+  margin: 0;
+}
+
+.container {
+  color: #232129;
+  padding: 4rem;
+  font-family: -apple-system, Roboto, sans-serif, serif;
+}
+
+.nav {
+  grid-template-columns: 1fr 1fr;
+  display: grid;
+  margin: 40px auto;
+}
+
+.nav-link {
+  color: #8954a8;
+  font-weight: bold;
+  font-size: 16;
+  vertical-align: 5%;
+  text-align: right;
+}
+
+.footer{
+    text-align: center;
+    color: #bbb;
+    margin: 40px auto;
+} */
+
