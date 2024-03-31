@@ -70,9 +70,9 @@ export default function Navbar() {
     //       </div> */}
     //     </nav>
 
-    <header class="container">
-      <nav class="navbar  navbar-expand-lg customed-nav">
-        <h1 class="customed-h1">
+    <header className="container">
+      <nav className="navbar  navbar-expand-lg customed-nav">
+        <h1 className="customed-h1">
           {title}
           <br />
           <span style={headingAccentStyles}>
@@ -80,7 +80,7 @@ export default function Navbar() {
           </span>
         </h1>
         <button
-          class="navbar-toggler"
+          className="navbar-toggler"
           type="button"
           data-bs-toggle="collapse"
           data-bs-target="#navbarTogglerDemo03"
@@ -88,19 +88,19 @@ export default function Navbar() {
           aria-expanded="false"
           aria-label="Toggle navigation"
         >
-          <span class="navbar-toggler-icon"></span>
+          <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+        <div className="collapse navbar-collapse" id="navbarTogglerDemo03">
 
-        <div class="navbar-nav ms-auto">
-            <Link class="nav-link"  to="/">
+        <div className="navbar-nav ms-auto">
+            <Link className="nav-link"  to="/">
               Home
             </Link>
-            <Link class="nav-link" to="/portfolio">
+            <Link className="nav-link" to="/portfolio">
               Portfolio
             </Link>
-            <Link class="nav-link" to="/projects">
+            <Link className="nav-link" to="/projects">
               Projects/Blog
             </Link>
           </div> 
