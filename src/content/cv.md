@@ -7,6 +7,7 @@ featuredImg: ../images/features/lebenslauf-schreiben-vorlage-banner.png
 thumb: ../images/thumbs/lebenslauf.png
 ---
 
+
 ## Ausbildung
 
 - M.Sc. Informatik, 08/2023 – Jetzt, Universität Paderborn
