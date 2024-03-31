@@ -1,0 +1,38 @@
+
+.details {
+  max-width: 800px; /* Set max-width for better readability */
+  margin: 0 auto; /* Center the content horizontally */
+  padding: 0 20px; /* Add padding to provide space around the content */
+}
+
+
+.details h2 {
+  font-size: 2em;
+  margin: 30px auto;
+}
+
+.details h1 {
+  font-size: 3em;
+  margin: 10px auto 30px;
+}
+
+.details h3 {
+    font-size: 1.5em;
+    font-weight: 400;
+    margin-bottom: 40px;
+  }
+
+.details li{
+  margin:13px 20px;
+
+}
+
+.html {
+  margin-top: 40px;
+}
+
+.featured {
+  margin-bottom: 40px;
+}
+
+

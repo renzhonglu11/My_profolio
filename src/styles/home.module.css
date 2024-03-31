@@ -19,4 +19,16 @@
     border-radius: 10px;
     margin-top: 20px;
     font-weight: 500;
+    text-decoration: none;
+    color: white; /* Set text color to white */
+    font-weight: bold; /* Set font weight to bold */
+    box-shadow: 4px 4px 15px rgb(47, 47, 47); /* Add shadow */
   }
+
+
+
+  .mylinks {
+  display: inline-block;
+  text-align: right;
+}
+
