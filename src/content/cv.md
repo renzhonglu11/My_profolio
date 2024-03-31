@@ -7,9 +7,6 @@ featuredImg: ../images/features/lebenslauf-schreiben-vorlage-banner.png
 thumb: ../images/thumbs/lebenslauf.png
 ---
 
-
-- **Anschrift:** Rosenstraße 25, Paderborn, Nordrhein-Westfalen
-- **Telefon:** +49 15206077929
 - **E-Mail:** renzhonglu22@gmail.com
 
 ## Ausbildung
