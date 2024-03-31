@@ -7,12 +7,10 @@ featuredImg: ../images/features/lebenslauf-schreiben-vorlage-banner.png
 thumb: ../images/thumbs/lebenslauf.png
 ---
 
-- **E-Mail:** renzhonglu22@gmail.com
-
 ## Ausbildung
 
 - M.Sc. Informatik, 08/2023 – Jetzt, Universität Paderborn
-  - Schwerpunkt: ML 1, Data Science Of Dynamic System, Advanced Computer Architecture, Design code analyses for large-scale software system I
+  - Schwerpunkt: ML 1, Data science of dynamic system, Advanced computer architecture, Design code analyses for large-scale software system I
 - B.Sc. Informatik, 10/2019 – 08/2023, Universität Paderborn
   - Schwerpunkte: Softwaretechnik, Algorithmen und Komplexität, Computer-Systeme, Daten und Wissen, Embedded system, IT-Sicherheit, Algorithmische Geometrie
 
