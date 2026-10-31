@@ -13,10 +13,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/site.css?v=hero-status">
+<link rel="stylesheet" href="css/site.css?v=project-demos">
 <script src="js/figure-data.js?v=mount-layer" defer></script>
 <script type="module" src="js/fx.js?v=viewport-smoke"></script>
 <script src="js/main.js" defer></script>
+<script src="js/projects.js?v=project-demos" defer></script>
 </head>
 <body>
 <div class="page" style="min-height: 100vh; background: #ECEBE8; color: #1E1F22; font-family: 'Inter Tight', 'Helvetica Neue', Arial, sans-serif; font-size: 16px; line-height: 1.6; --accent: #F26A21">
@@ -71,7 +72,7 @@
 <span class="hero-status-dot"></span>
 GO FOR LAUNCH · Open to work · Germany</div></div>
 <h1 style="margin: 0; font-size: clamp(40px, 4.6vw, 66px); line-height: 0.98; font-weight: 800; letter-spacing: -0.04em"><span class="line">Hi, I'm</span><br><span class="line" style="animation-delay: 0.18s; color: var(--ink)">Renzhong.<span class="name-slash" aria-hidden="true">/</span></span></span></h1>
-<p class="hero-intro" style="margin: 0; font-size: 19px; line-height: 1.5; color: #4A4C52"><strong style="color: #111214; font-weight: 700">Native-AI Developer.</strong> I build backend services, developer tools and hardware-near C++/Python software.</p>
+<p class="hero-intro" style="margin: 0; font-size: 19px; line-height: 1.5; color: #4A4C52"><strong style="color: #111214; font-weight: 700">Native-AI Developer.</strong> I build complex software systems.</p>
 <div style="display: flex; flex-wrap: wrap; gap: 12px">
 <a class="btn" href="#about" style="display: inline-flex; align-items: center; gap: 8px; min-height: 50px; padding: 0 22px; border-radius: 10px; background: var(--accent); color: #140E0A; font-weight: 700; font-size: 15px">Begin descent ↓</a>
 <a class="btn" href="#contact" style="display: inline-flex; align-items: center; min-height: 50px; padding: 0 22px; border-radius: 10px; border: 1px solid rgba(30,31,34,0.14); font-weight: 500; font-size: 15px">Get in touch</a>
@@ -310,7 +311,7 @@ GO FOR LAUNCH · Open to work · Germany</div></div>
 <section id="work" class="lg" style="min-height: 1180px">
 <div class="cL annot" style="justify-content: flex-end; padding-bottom: 120px; gap: 40px">
 <div style="display: flex; align-items: center; gap: 12px; text-align: right">
-<div><div class="an">Engine array (9x)</div><div class="spec">3 projects · all firing</div></div>
+<div><div class="an">Engine array (9x)</div><div class="spec">4 projects · all firing</div></div>
 <svg class="arw" width="120" height="40" viewBox="0 0 120 40" aria-hidden="true"><path d="M2 20 C 40 36 80 36 116 22 M105 15 L116 22 L106 30"></path></svg>
 </div>
 <div style="display: flex; align-items: center; gap: 12px; text-align: right">
@@ -323,68 +324,67 @@ GO FOR LAUNCH · Open to work · Germany</div></div>
 <div class="spec" style="color: var(--ink)">05 / Engine array — Selected work</div>
 <h2 style="margin: 0; font-size: clamp(34px, 3.6vw, 52px); line-height: 1; font-weight: 800; letter-spacing: -0.035em">What drives it.</h2>
 </div>
-<!-- PROJECTS: copy an <article> to add one; to add a screenshot put it in assets/ and insert <img src="assets/project-1.jpg" alt="..." style="width:100%;height:150px;object-fit:cover;border-radius:10px"> at the top of the card -->
+<!-- Project summaries stay short; implementation notes expand in place. -->
+<article class="card rv project-card" aria-labelledby="project-thesis-title">
+<div class="spec project-type">Engine 01 · Master's thesis</div>
+<h3 id="project-thesis-title">Edge–Cloud LLM Inference</h3>
+<p class="project-summary">A multimodal LLM inference system with speculative decoding between NVIDIA Jetson and a GPU server.</p>
+<ul class="project-tags" aria-label="Technologies"><li>Python</li><li>PyTorch</li><li>gRPC</li><li>Jetson</li></ul>
+<div class="project-actions">
+<button class="project-action project-toggle" type="button" data-project-toggle aria-expanded="true" aria-controls="project-thesis-detail" hidden>Details <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></button>
 
-<article class="card rv" style="max-width: 480px; width: 100%; box-sizing: border-box; padding: 22px; display: flex; flex-direction: column; gap: 12px">
-<div class="spec">Engine 01 · Master's thesis · 02/2026 — 09/2026</div>
-<h3 style="margin: 0; font-size: 24px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em">Edge–Cloud Speculative Decoding for Multimodal LLMs</h3>
-<p style="margin: 0; color: #4A4C52; font-size: 15px">Built and evaluated an edge–cloud inference system for multimodal LLM with speculative decoding. An asynchronous gRPC front end is decoupled from a separate GPU inference process via request/response queues and pending-request matching.</p>
-<p style="margin: 0; color: #4A4C52; font-size: 15px">Evaluated with LLaVA-1.6 7B and Qwen2.5-VL 7B: in the single-request configurations studied, 31.8–48.3 % less target-server execution time than server-side autoregressive decoding; a compact interface shrinks the one-time prefill response by a factor of 14.08–37.61 compared with the earlier interface.</p>
-<div style="display: flex; flex-wrap: wrap; gap: 8px">
-
-<span style="padding: 3px 10px; border-radius: 6px; background: rgba(30,31,34,0.05); border: 1px solid rgba(30,31,34,0.12); font-family: 'JetBrains Mono', monospace; font-size: 12px">Python</span>
-
-<span style="padding: 3px 10px; border-radius: 6px; background: rgba(30,31,34,0.05); border: 1px solid rgba(30,31,34,0.12); font-family: 'JetBrains Mono', monospace; font-size: 12px">PyTorch</span>
-
-<span style="padding: 3px 10px; border-radius: 6px; background: rgba(30,31,34,0.05); border: 1px solid rgba(30,31,34,0.12); font-family: 'JetBrains Mono', monospace; font-size: 12px">gRPC</span>
-
-<span style="padding: 3px 10px; border-radius: 6px; background: rgba(30,31,34,0.05); border: 1px solid rgba(30,31,34,0.12); font-family: 'JetBrains Mono', monospace; font-size: 12px">NVIDIA Jetson</span>
-
-<span style="padding: 3px 10px; border-radius: 6px; background: rgba(30,31,34,0.05); border: 1px solid rgba(30,31,34,0.12); font-family: 'JetBrains Mono', monospace; font-size: 12px">H100</span>
-
+</div>
+<div class="project-detail" id="project-thesis-detail">
+<p class="project-date">02/2026 — 09/2026</p>
+<p>Edge–Cloud Speculative Decoding for Multimodal LLMs. An asynchronous gRPC front end is decoupled from a separate GPU inference process via request/response queues and pending-request matching.</p>
+<p>Evaluated with LLaVA-1.6 7B and Qwen2.5-VL 7B on Jetson and H100: in the single-request configurations studied, 31.8–48.3 % less target-server execution time than server-side autoregressive decoding. A compact interface reduced the one-time prefill response by a factor of 14.08–37.61 compared with the earlier interface.</p>
 </div>
 </article>
 
-<article class="card rv" style="max-width: 480px; width: 100%; box-sizing: border-box; padding: 22px; display: flex; flex-direction: column; gap: 12px">
-<div class="spec">Engine 02 · Personal project</div>
-<h3 style="margin: 0; font-size: 24px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em">MyLease<wbr>AdminApp — Modular Java Web Platform</h3>
-<p style="margin: 0; color: #4A4C52; font-size: 15px">Separate admin and user backends for apartments, rooms, leases and viewings. REST APIs with OpenAPI docs and JPA/MySQL, stateless auth with Spring Security/JWT and BCrypt, Redis verification codes. MinIO handles apartment image uploads and object storage, returning image URLs for the front end; Docker Compose wires the admin backend to MySQL, Redis and MinIO for local development.</p>
-<div style="display: flex; flex-wrap: wrap; gap: 8px">
-
-<span style="padding: 3px 10px; border-radius: 6px; background: rgba(30,31,34,0.05); border: 1px solid rgba(30,31,34,0.12); font-family: 'JetBrains Mono', monospace; font-size: 12px">Java 21</span>
-
-<span style="padding: 3px 10px; border-radius: 6px; background: rgba(30,31,34,0.05); border: 1px solid rgba(30,31,34,0.12); font-family: 'JetBrains Mono', monospace; font-size: 12px">Spring Boot</span>
-
-<span style="padding: 3px 10px; border-radius: 6px; background: rgba(30,31,34,0.05); border: 1px solid rgba(30,31,34,0.12); font-family: 'JetBrains Mono', monospace; font-size: 12px">MySQL</span>
-
-<span style="padding: 3px 10px; border-radius: 6px; background: rgba(30,31,34,0.05); border: 1px solid rgba(30,31,34,0.12); font-family: 'JetBrains Mono', monospace; font-size: 12px">Redis</span>
-
-<span style="padding: 3px 10px; border-radius: 6px; background: rgba(30,31,34,0.05); border: 1px solid rgba(30,31,34,0.12); font-family: 'JetBrains Mono', monospace; font-size: 12px">MinIO</span>
-
-<span style="padding: 3px 10px; border-radius: 6px; background: rgba(30,31,34,0.05); border: 1px solid rgba(30,31,34,0.12); font-family: 'JetBrains Mono', monospace; font-size: 12px">Docker Compose</span>
-
+<article class="card rv project-card" aria-labelledby="project-lease-title">
+<div class="spec project-type">Engine 02 · Personal project</div>
+<h3 id="project-lease-title">MyLease<wbr>AdminApp</h3>
+<p class="project-summary">A modular Java backend for apartment rentals, with admin and user APIs, authentication and image storage.</p>
+<ul class="project-tags" aria-label="Technologies"><li>Java 21</li><li>Spring Boot</li><li>MySQL</li><li>Redis</li></ul>
+<div class="project-actions">
+<button class="project-action project-toggle" type="button" data-project-toggle aria-expanded="true" aria-controls="project-lease-detail" hidden>Details <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></button>
+<a class="project-action project-github" href="https://github.com/renzhonglu11/MyLeaseAdminApp" target="_blank" rel="noopener" aria-label="View MyLeaseAdminApp on GitHub"><svg class="gh" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path></svg><span>GitHub ↗</span></a>
 </div>
-<a href="https://github.com/renzhonglu11/MyLeaseAdminApp" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px; font-weight: 600; color: var(--ink)"><svg class="gh" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path></svg>View on GitHub ↗</a>
+<div class="project-detail" id="project-lease-detail">
+<p>Separate admin and user backends for apartments, rooms, leases and viewings. REST APIs with OpenAPI docs and JPA/MySQL; stateless authentication with Spring Security, JWT and BCrypt; Redis verification codes.</p>
+<p>MinIO handles apartment image uploads and object storage, returning image URLs for the front end. Docker Compose wires the admin backend to MySQL, Redis and MinIO for local development.</p>
+</div>
 </article>
 
-<article class="card rv" style="max-width: 480px; width: 100%; box-sizing: border-box; padding: 22px; display: flex; flex-direction: column; gap: 12px">
-<div class="spec">Engine 03 · Personal project</div>
-<h3 style="margin: 0; font-size: 24px; line-height: 1.15; font-weight: 700; letter-spacing: -0.02em">Raspberry Pi Camera Detection &amp; Ball Tracking</h3>
-<p style="margin: 0; color: #4A4C52; font-size: 15px">Modular C++17 application that detects a ball with OpenCV and tracks it automatically via PCA9685 over I²C. GStreamer/WebRTC preview with separate processing and streaming threads and a latest-frame strategy; CMake cross-compilation for AArch64, reproducible offline replays and a CTest for I²C error paths.</p>
-<div style="display: flex; flex-wrap: wrap; gap: 8px">
-
-<span style="padding: 3px 10px; border-radius: 6px; background: rgba(30,31,34,0.05); border: 1px solid rgba(30,31,34,0.12); font-family: 'JetBrains Mono', monospace; font-size: 12px">C++17</span>
-
-<span style="padding: 3px 10px; border-radius: 6px; background: rgba(30,31,34,0.05); border: 1px solid rgba(30,31,34,0.12); font-family: 'JetBrains Mono', monospace; font-size: 12px">OpenCV</span>
-
-<span style="padding: 3px 10px; border-radius: 6px; background: rgba(30,31,34,0.05); border: 1px solid rgba(30,31,34,0.12); font-family: 'JetBrains Mono', monospace; font-size: 12px">GStreamer · WebRTC</span>
-
-<span style="padding: 3px 10px; border-radius: 6px; background: rgba(30,31,34,0.05); border: 1px solid rgba(30,31,34,0.12); font-family: 'JetBrains Mono', monospace; font-size: 12px">CMake</span>
-
-<span style="padding: 3px 10px; border-radius: 6px; background: rgba(30,31,34,0.05); border: 1px solid rgba(30,31,34,0.12); font-family: 'JetBrains Mono', monospace; font-size: 12px">Raspberry Pi</span>
-
+<article class="card rv project-card" aria-labelledby="project-camera-title">
+<div class="spec project-type">Engine 03 · Personal project</div>
+<h3 id="project-camera-title">Raspberry Pi Ball Tracking</h3>
+<p class="project-summary">Detects and automatically tracks a ball with OpenCV, I²C motor control and a live browser preview.</p>
+<ul class="project-tags" aria-label="Technologies"><li>C++17</li><li>OpenCV</li><li>WebRTC</li><li>CMake</li></ul>
+<div class="project-actions">
+<button class="project-action project-toggle" type="button" data-project-toggle aria-expanded="true" aria-controls="project-camera-detail" hidden>Details <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></button>
+<a class="project-action project-github" href="https://github.com/renzhonglu11/camera_detection" target="_blank" rel="noopener" aria-label="View Raspberry Pi Ball Tracking on GitHub"><svg class="gh" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path></svg><span>GitHub ↗</span></a>
 </div>
-<a href="https://github.com/renzhonglu11/camera_detection" target="_blank" rel="noopener" style="display: inline-flex; align-items: center; gap: 8px; min-height: 44px; font-size: 15px; font-weight: 600; color: var(--ink)"><svg class="gh" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path></svg>View on GitHub ↗</a>
+<div class="project-detail" id="project-camera-detail">
+<p>Modular C++17 application that detects a ball with OpenCV and tracks it automatically via PCA9685 over I²C. GStreamer/WebRTC provides the live preview.</p>
+<p>Separate processing and streaming threads use a latest-frame strategy. CMake supports cross-compilation for AArch64, reproducible offline replays and a CTest for I²C error paths.</p>
+</div>
+</article>
+
+<article class="card rv project-card" aria-labelledby="project-stm32-title">
+<div class="spec project-type">Engine 04 · University project</div>
+<h3 id="project-stm32-title">STM32 Interfaces &amp; Oscilloscope</h3>
+<p class="project-summary">Embedded C projects for sensor interfaces, a traffic-light controller and an ADC oscilloscope with LCD waveform display.</p>
+<ul class="project-tags" aria-label="Technologies"><li>Embedded C</li><li>STM32</li><li>SPI / I²C</li><li>ADC</li></ul>
+<div class="project-actions">
+<button class="project-action project-toggle" type="button" data-project-toggle aria-expanded="true" aria-controls="project-stm32-detail" hidden>Details <svg viewBox="0 0 16 16" aria-hidden="true"><path d="m4 6 4 4 4-4"/></svg></button>
+<button class="project-action project-demo" type="button" data-demo-open hidden aria-haspopup="dialog" aria-controls="project-demo-dialog"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="m6 3 7 5-7 5Z"/></svg>Watch demo</button>
+<a class="project-action project-github" href="https://github.com/renzhonglu11/PMI/tree/main" target="_blank" rel="noopener" aria-label="View STM32 Interfaces & Oscilloscope on GitHub"><svg class="gh" viewBox="0 0 16 16" aria-hidden="true"><path d="M8 0c4.42 0 8 3.58 8 8a8.013 8.013 0 0 1-5.45 7.59c-.4.08-.55-.17-.55-.38 0-.27.01-1.13.01-2.2 0-.75-.25-1.23-.54-1.48 1.78-.2 3.65-.88 3.65-3.95 0-.88-.31-1.59-.82-2.15.08-.2.36-1.02-.08-2.12 0 0-.67-.22-2.2.82-.64-.18-1.32-.27-2-.27-.68 0-1.36.09-2 .27-1.53-1.03-2.2-.82-2.2-.82-.44 1.1-.16 1.92-.08 2.12-.51.56-.82 1.28-.82 2.15 0 3.06 1.86 3.75 3.64 3.95-.23.2-.44.55-.51 1.07-.46.21-1.61.55-2.33-.66-.15-.24-.6-.83-1.23-.82-.67.01-.27.38.01.53.34.19.73.9.82 1.13.16.45.68 1.31 2.69.94 0 .67.01 1.3.01 1.49 0 .21-.15.45-.55.38A7.995 7.995 0 0 1 0 8c0-4.42 3.58-8 8-8Z"></path></svg><span>GitHub ↗</span></a>
+</div>
+<div class="project-detail" id="project-stm32-detail">
+<p>Developed on the NUCLEO-L053R8: SPI communication with an ADXL345 accelerometer, software I²C for a QMC5883L magnetometer, One-Wire for a DS18B20 temperature sensor, and UART readout.</p>
+<p>A table-driven finite-state machine controls the traffic-light project. The oscilloscope uses timer-driven ADC sampling, a 240-sample circular buffer and falling-edge triggering, with waveform display and button-controlled zoom on an ILI9341 LCD.</p>
+</div>
 </article>
 
 </div>
@@ -438,5 +438,22 @@ GO FOR LAUNCH · Open to work · Germany</div></div>
 </section>
 
 </div>
+
+<dialog class="project-dialog" id="project-demo-dialog" aria-labelledby="project-demo-title" aria-describedby="project-demo-description">
+<div class="project-dialog-header">
+<div><div class="spec">Engine 04 · STM32 / Live demo</div><h2 id="project-demo-title">Digital oscilloscope</h2></div>
+<button class="project-dialog-close" type="button" data-demo-close aria-label="Close video" autofocus><svg viewBox="0 0 20 20" aria-hidden="true"><path d="m5 5 10 10M15 5 5 15"/></svg></button>
+</div>
+<div class="project-video-frame"><video id="project-demo-video" controls playsinline preload="none" aria-label="STM32 project demonstration">Your browser does not support video playback.</video></div>
+<div class="project-dialog-footer">
+<div class="project-demo-picker" role="group" aria-label="Choose a demonstration">
+<button type="button" data-demo-clip="oscilloscope" aria-pressed="true">Oscilloscope</button>
+<button type="button" data-demo-clip="sensors" aria-pressed="false">Sensors</button>
+<button type="button" data-demo-clip="traffic-light" aria-pressed="false">Traffic light</button>
+</div>
+<p id="project-demo-description">Timer-driven ADC capture and waveform display on an ILI9341 LCD.</p>
+<p class="project-video-error" hidden>Unable to play this video. <a href="https://github.com/renzhonglu11/PMI#demonstration-videos" target="_blank" rel="noopener">Watch on GitHub ↗</a></p>
+</div>
+</dialog>
 </body>
 </html>

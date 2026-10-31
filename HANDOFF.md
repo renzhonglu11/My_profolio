@@ -21,6 +21,7 @@ Keep it that way unless the owner asks otherwise.
 | `index.html` | All page content. Every placeholder is in `[square brackets]`. | **Yes — main work** |
 | `css/site.css` | All page styles. Colours and layout at the top, breakpoints at the bottom. | Small tweaks only |
 | `js/main.js` | Footer year; JS fallback for the scroll pan in Firefox. | Rarely |
+| `js/projects.js` | Project-detail disclosures and the on-demand STM32 video dialog. | To update project interactions |
 | `js/fx.js` | ES module, three.js: flame, smoke, black grit and sparks on two WebGL `<canvas>` layers; starts itself, falls back to `fx-2d.js`. | Only to tune the effect |
 | `js/fx-2d.js` | Canvas 2D fallback (no dependencies). On fallback `fx.js` stretches the fire canvas to `top: 73.778%; height: 27.273%` (360 units above `FX.rect`), adds a `canvas[data-fx="smoke"]` at the end of `.fig`, and keeps the overlay, where the 2D version draws the cryogenic vapour column (vent to pad). | Only to tune the effect |
 | `js/figure-data.js` | **Generated.** Figure size + anchor points for the particles. | No — regenerate |
@@ -46,11 +47,15 @@ Keep it that way unless the owner asks otherwise.
    ask the owner. If a stat has no real value, delete that element rather than
    making one up. The playful annotations ("LOX tank → [trait]") are optional —
    delete an annotation block if the owner has nothing for it.
-4. **Projects:** each project is one `<article class="card rv">` in `#work`.
-   Copy/delete to have 2–4. Put a screenshot in `assets/` (≤ 300 KB, ~1200 px
-   wide) and replace the placeholder `<div>…[Project screenshot 01]</div>` with
-   `<img src="assets/project-1.jpg" alt="short description" style="width:100%;height:150px;object-fit:cover;border-radius:10px">`.
-   Point "Read case study" to a real URL or remove it.
+4. **Projects:** four `<article class="card rv project-card">` elements in `#work`
+   show a short summary and 3–4 technology tags. Longer implementation notes live
+   in `.project-detail`; `js/projects.js` enables the accessible Details buttons.
+   Without JS the notes remain readable. Keep GitHub links visible on the cards.
+   The STM32 Watch demo button opens a native `<dialog>` with three local MP4s
+   from `assets/videos/` (sources in that folder's README). No video is requested
+   before a click. Closing via the button, Escape or backdrop stops and unloads
+   playback and returns focus to the opener. The dialog sits outside `.page` so
+   the rocket's backdrop/filter stacking contexts do not affect it.
 5. **Résumé:** add `assets/resume.pdf` and point both "Résumé PDF" links to it
    (`href="assets/resume.pdf" download`). They currently point to `#contact`.
 6. **Contact buttons** currently use `href="#contact"` — change to
