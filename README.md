@@ -1,54 +1,50 @@
-<p align="center">
-  <a href="https://www.gatsbyjs.com/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter">
-    <img alt="Gatsby" src="https://www.gatsbyjs.com/Gatsby-Monogram.svg" width="60" />
-  </a>
-</p>
-<h1 align="center">
-  Gatsby minimal starter
-</h1>
+# Launch Tower — personal site
 
-## 🚀 Quick start
+One-page personal site: scroll from the nose of a rocket down to its launch pad.
+Plain HTML/CSS/JS, no build step.
 
-1.  **Create a Gatsby site.**
+> Working on this as an agent? Read **HANDOFF.md** first.
 
-    Use the Gatsby CLI to create a new site, specifying the minimal starter.
+## Preview locally
 
-    ```shell
-    # create a new Gatsby site using the minimal starter
-    npm init gatsby
-    ```
+Open `index.html` directly, or (better, so fonts and SVGs load like on the web):
 
-2.  **Start developing.**
+```bash
+python3 -m http.server 8000
+# then open http://localhost:8000
+```
 
-    Navigate into your new site’s directory and start it up.
+## Deploy to GitHub Pages
 
-    ```shell
-    cd my-gatsby-site/
-    npm run develop
-    ```
+**User site — `https://<username>.github.io`**
 
-3.  **Open the code and start customizing!**
+1. Create a public repo named exactly `<username>.github.io` (no README).
+2. Push these files to the root of `main`:
+   ```bash
+   git init
+   git add .
+   git commit -m "Launch Tower site"
+   git branch -M main
+   git remote add origin https://github.com/<username>/<username>.github.io.git
+   git push -u origin main
+   ```
+3. Repo → **Settings → Pages** → Source: *Deploy from a branch* → `main` / `(root)` → Save.
+4. Live in a minute or two.
 
-    Your site is now running at http://localhost:8000!
+A project repo (`https://<username>.github.io/<repo>`) works too: all paths are relative.
 
-    Edit `src/pages/index.js` to see your site update in real-time!
+## Structure
 
-4.  **Learn more**
+```
+index.html            content
+css/site.css          styles
+js/main.js            startup + scroll fallback
+js/fx.js              three.js effects: flame, smoke, black grit, sparks (ES module)
+js/figure-data.js     generated anchors for the particles
+assets/               figure SVGs (generated), résumé, screenshots
+figure-src/           source of the rocket drawing (node build.mjs && node make-assets.mjs)
+.nojekyll             serve files as-is
+```
 
-    - [Documentation](https://www.gatsbyjs.com/docs/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Tutorials](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Guides](https://www.gatsbyjs.com/tutorial/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [API Reference](https://www.gatsbyjs.com/docs/api-reference/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Plugin Library](https://www.gatsbyjs.com/plugins?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-    - [Cheat Sheet](https://www.gatsbyjs.com/docs/cheat-sheet/?utm_source=starter&utm_medium=readme&utm_campaign=minimal-starter)
-
-## 🚀 Quick start (Gatsby Cloud)
-
-Deploy this starter with one click on [Gatsby Cloud](https://www.gatsbyjs.com/cloud/):
-
-[<img src="https://www.gatsbyjs.com/deploynow.svg" alt="Deploy to Gatsby Cloud">](https://www.gatsbyjs.com/dashboard/deploynow?url=https://github.com/gatsbyjs/gatsby-starter-minimal)
+Credits: the isometric drawing kit in `figure-src/kit/` comes from the
+*anatomy* skill (MIT, see `figure-src/kit/LICENSE`).

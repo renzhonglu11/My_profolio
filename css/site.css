@@ -1,0 +1,142 @@
+/* Generated from the design; edit freely. Sections: tokens & layout, figure rail, hud, breakpoints. */
+body{margin:0;background:#ECEBE8}
+html{overflow-x:clip;scroll-behavior:smooth}
+a{color:#1E1F22;text-decoration:none}a:hover{color:#000000}
+/* the big headings use tight negative tracking; open the gaps between words so they don't run together */
+h1,h2{word-spacing:.14em}
+/* GitHub mark before GitHub links; inherits the link colour */
+.gh{width:1.15em;height:1.15em;flex:none;fill:currentColor}
+.stage{position:relative;background:linear-gradient(to top,#E7E5E1,transparent 90px),radial-gradient(120% 60% at 50% 100%,#DEDBD6 0%,rgba(222,219,214,0) 60%),linear-gradient(180deg,#F4F3F0 0,#EEEDEA 50%,#E7E5E1 100%)}
+.lg{display:grid;grid-template-columns:minmax(0,1fr) var(--figw) minmax(0,1fr);max-width:1440px;margin:0 auto;position:relative;z-index:2}
+.cL{grid-column:1;grid-row:1;padding:64px 40px 64px 24px;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;min-width:0}
+.cX{grid-column:3;grid-row:1;padding:64px 24px 64px 40px;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;min-width:0}
+.rail{position:absolute;top:0;bottom:0;left:50%;width:var(--figw);margin-left:calc(var(--figw) / -2);z-index:1;pointer-events:none;overflow-x:visible;overflow-y:clip;view-timeline:--rail block}
+.stick{position:sticky;top:0;height:100vh}
+.fig{position:relative;width:100%;aspect-ratio:470 / 3520;container-type:inline-size;transform:translateY(calc((100vh - 100%) * var(--p)))}
+.fig-layer{position:absolute;inset:0;width:100%;height:100%;display:block}
+.mast-light{position:absolute;top:0;left:0;width:100%;height:auto;display:block;opacity:.58}
+@media (prefers-reduced-motion:no-preference){
+  .mast-light{animation:mast-light 3.6s ease-in-out infinite}
+  @keyframes mast-light{
+    0%,100%{opacity:.2}
+    18%{opacity:.96}
+    28%{opacity:.54}
+    38%{opacity:.78}
+    60%{opacity:.12}
+    76%{opacity:.65}
+    85%{opacity:.39}
+  }
+}
+.page{--figw:480px;--ink:color-mix(in srgb,var(--accent) 72%,#000)}
+.vword{position:fixed;left:30px;top:50%;transform:translateY(-50%);z-index:20;writing-mode:vertical-rl;text-orientation:upright;letter-spacing:.55em;font-size:12px;font-weight:600;color:#2A2C30;pointer-events:none}
+@media (max-width:1639px){.vword{display:none}}
+.fxc{position:absolute;pointer-events:none;display:block}
+/* three.js overlay for smoke and black grit: covers the viewport, stays inside the rail's stacking layer (under the content) */
+.fxo{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;display:block}
+/* pre-launch rumble: rocket, engines, clamps and the printed name shiver; the tower and pad stay put */
+.fig-front,.fig-name,.fig-name-sub{animation:rumble .18s steps(1) infinite}
+@keyframes rumble{0%{translate:0 0}12%{translate:.7px -.3px}25%{translate:-.5px .4px}37%{translate:.4px .6px}50%{translate:-.7px -.2px}62%{translate:.3px -.5px}75%{translate:-.4px .3px}87%{translate:.6px .2px}}
+@property --p{syntax:'<number>';inherits:true;initial-value:0}
+.an{font-family:'Inter Tight',sans-serif;font-weight:600;text-transform:uppercase;font-size:13px;line-height:1.4;letter-spacing:.16em;color:#1E1F22}
+.spec{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#5A5C62}
+.arw{overflow:visible;flex:0 0 auto}
+.arw path{fill:none;stroke:#2A2C30;stroke-width:1.1;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:420;stroke-dashoffset:0}
+.card{background:rgba(255,255,255,.66);border:1px solid rgba(30,31,34,.1);border-radius:16px;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);box-shadow:0 1px 0 rgba(255,255,255,.8) inset,0 18px 40px -24px rgba(30,31,34,.28)}
+@media (min-width:1181px){
+  .lg:has(> .main > .card){max-width:1560px;grid-template-columns:minmax(0,1fr) calc(var(--figw) - 64px) minmax(0,1fr)}
+  .cL.main:has(> .card){padding-inline:20px 12px}
+  .cX.main:has(> .card){padding-inline:12px 20px}
+  .main > .card{max-width:520px !important}
+  .hero-intro{width:min(510px,calc(100% + 90px))}
+}
+.btn{transition:transform .15s ease}.btn:hover{transform:translateY(-1px)}
+.navlink{color:#55575C}.navlink:hover{color:#111214}
+.stars{display:none;position:absolute;left:0;right:0;top:0;height:1500px;pointer-events:none;background-image:radial-gradient(1.2px 1.2px at 24px 38px,#fff,transparent),radial-gradient(1px 1px at 140px 120px,#fff,transparent),radial-gradient(1.4px 1.4px at 90px 170px,#fff,transparent),radial-gradient(1px 1px at 200px 60px,#fff,transparent);background-size:230px 200px;-webkit-mask-image:linear-gradient(#000 40%,transparent);mask-image:linear-gradient(#000 40%,transparent);animation:tw 4s ease-in-out infinite alternate}
+.stars2{background-image:radial-gradient(1px 1px at 60px 90px,#fff,transparent),radial-gradient(1.6px 1.6px at 170px 20px,#fff,transparent);background-size:310px 260px;animation-delay:-2s;opacity:.7}
+@keyframes tw{from{opacity:.45}to{opacity:1}}
+.line{display:inline-block;opacity:0;transform:translateY(40%);filter:blur(8px);animation:rise .9s cubic-bezier(.2,.7,.2,1) forwards}
+@keyframes rise{to{opacity:1;transform:none;filter:none}}
+.name-ending{white-space:nowrap}
+/* the pill never wraps, so keep its width out of the hero column's sizing: on phones it is zoomed down to fit instead */
+.hero-status-wrap{width:100%;min-width:0;contain:inline-size}
+.hero-status{display:inline-flex;align-items:center;gap:8px;padding:6px 12px;border:1px solid rgba(30,31,34,.14);background:rgba(255,255,255,.6);border-radius:999px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em;color:#2A2C30;white-space:nowrap}
+.hero-status-dot{width:8px;height:8px;flex:none;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px rgba(242,106,33,.18)}
+.name-slash{display:inline-block;width:.8em;line-height:.88;text-align:center;font-size:.78em;letter-spacing:0}
+/* The desktop column's right padding has room for hanging punctuation. */
+@media (min-width:1181px){.name-slash{margin-right:-.8em}}
+@media (min-width:1440px){h1 .line{white-space:nowrap}}
+@media (prefers-reduced-motion:no-preference){
+  .name-slash{animation:slash-blink 1.2s step-end infinite}
+  @keyframes slash-blink{0%,100%{opacity:1}50%{opacity:0}}
+}
+.bob{animation:bob 1.8s ease-in-out infinite}
+@keyframes bob{50%{transform:translateY(5px)}}
+.hud{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:1;display:flex;flex-direction:column;align-items:flex-end;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;color:#3A3C40;pointer-events:none}
+.rl{position:relative;width:1px;height:220px;background:rgba(30,31,34,.25);margin-right:4px}
+.mk{position:absolute;left:-5px;top:0;width:9px;height:9px;border:1.5px solid var(--accent);transform:rotate(45deg)}
+@property --alt{syntax:'<integer>';inherits:false;initial-value:120}
+@property --tm{syntax:'<integer>';inherits:false;initial-value:600}
+.alt::after{content:"120"}
+.tm::after{content:"600"}
+@supports (animation-timeline: scroll()){
+.fig{animation:pan linear both;animation-timeline:--rail;animation-range:contain 0% contain 100%}
+@keyframes pan{from{--p:0}to{--p:1}}
+.alt{animation:altk linear both;animation-timeline:scroll(root);counter-reset:alt var(--alt)}
+.alt::after{content:counter(alt)}
+.tm{animation:tmk linear both;animation-timeline:scroll(root);counter-reset:tm var(--tm)}
+.tm::after{content:counter(tm)}
+.mk{animation:mk linear both;animation-timeline:scroll(root)}
+@keyframes altk{from{--alt:120}to{--alt:0}}
+@keyframes tmk{from{--tm:600}to{--tm:0}}
+@keyframes mk{from{top:0}to{top:100%}}
+.arw path{animation:draw linear both;animation-timeline:view();animation-range:entry 5% cover 45%}
+.rv{animation:rv linear both;animation-timeline:view();animation-range:entry 0% cover 28%}
+@keyframes draw{from{stroke-dashoffset:420}to{stroke-dashoffset:0}}
+@keyframes rv{from{opacity:0;transform:translateY(36px)}to{opacity:1;transform:none}}
+}
+@media (max-width:1180px){
+.page{--figw:240px}
+.lg{grid-template-columns:var(--figw) minmax(0,1fr);padding-left:8px}
+.main{grid-column:2 !important;align-items:flex-start !important;padding:48px 16px 48px 28px !important}
+/* the content column is wide here; let cards and the hero text use more of it than the desktop caps (440–480px) */
+.main>*{max-width:680px !important}
+.annot{display:none !important}
+.rail{left:8px;margin-left:0}
+.hud{display:none}
+.navlinks{display:none !important}
+}
+@media (max-width:600px){
+.page{--figw:118px}
+.main{padding:40px 14px 40px 18px !important}
+/* keep the logo and the GitHub button (with its mark) on one header line */
+header>div{padding-inline:16px !important}
+.hdr-gh{padding-inline:12px !important;gap:6px !important}
+/* "Renzhong./" is ~4.75em wide: below ~350px shrink the 40px headline so it stays inside the content column */
+h1{font-size:min(40px,calc((100vw - 158px) / 4.75)) !important}
+.hero-status-wrap{margin-left:min(0px,calc((100vw - 340px) * .6))}
+.hero-status{font-size:10px;letter-spacing:0;gap:5px;padding:5px 8px}
+}
+@media (max-width:420px){
+.hero-status{zoom:.88}
+}
+@media (max-width:372px){
+.hero-status{zoom:.8}
+}
+@media (max-width:352px){
+.hero-status{zoom:.72}
+}
+@media (min-width:601px) and (max-width:700px), (min-width:1181px) and (max-width:1300px){
+.hero-status{font-size:10px;letter-spacing:0;gap:6px;padding-inline:8px}
+}
+@media (prefers-reduced-motion:reduce){
+html{scroll-behavior:auto}
+.stars,.bob{animation:none}
+.line{animation:none;opacity:1;transform:none;filter:none}
+.arw path,.rv,.alt,.tm,.mk,.fig,.fig-front,.fig-name,.fig-name-sub{animation:none}
+}
+
+/* name printed on the booster: page text laid onto the figure (rotated, foreshortened like the iso view) */
+.fig-name,.fig-name-sub{position:absolute;white-space:nowrap;transform:translate(-50%,-50%) rotate(-90deg) scale(.866,1);line-height:1}
+.fig-name{font-family:'Inter Tight','Helvetica Neue',Arial,sans-serif;font-weight:800;font-size:11.915cqw;letter-spacing:0.7cqw;color:#1E1F22}
+.fig-name b{color:#F26A21;font-weight:800}
+.fig-name-sub{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:1.106cqw;letter-spacing:0.128cqw;color:#55575C}
