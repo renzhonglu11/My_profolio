@@ -129,16 +129,25 @@ function startFx2d(FX, fadeOverlay, smokeReach, smokeCloud) {
       age: 0, life: 4 + rnd() * 4, s0: 10 + rnd() * 10, g: 2 + rnd() * 1.5, v: (rnd() * SHAPES.length) | 0
     });
   }
+  // falling grit is an irregular chip: one of these unit polygons, stretched by p.ax and tumbling by p.spin
+  const CHIPS = Array.from({ length: 6 }, () => {
+    const n = 6 + ((rnd() * 4) | 0), a0 = rnd() * Math.PI * 2, squash = 0.6 + rnd() * 0.4;
+    return Array.from({ length: n }, (_, j) => {
+      const a = a0 + ((j + (rnd() - 0.5) * 0.7) / n) * Math.PI * 2, r = 0.55 + rnd() * 0.45;
+      return [Math.cos(a) * r, Math.sin(a) * r * squash];
+    });
+  });
+  const chip = () => ({ v: (rnd() * CHIPS.length) | 0, rot: rnd() * Math.PI * 2, spin: (rnd() - 0.5) * 9, ax: 0.7 + rnd() * 0.6 });
   // black grit thrown off the pad (falls back down) and fine soot that drifts up with the smoke
   function emitDebris() {
     if (debris.length > 320) return;
     const side = rnd() < 0.5 ? -1 : 1;
     const vx = wide ? side * (80 + rnd() * 280) : (rnd() - 0.5) * 220 + tdir[0] * 90;
-    debris.push({ x: ground[0] + (rnd() - 0.5) * 70, y: ground[1] - rnd() * 8, vx, vy: -(50 + rnd() * 230), age: 0, life: 0.8 + rnd() * 1.3, s: 0.6 + rnd() * 1.5, soot: false, floor: ground[1] + 30 });
+    debris.push({ x: ground[0] + (rnd() - 0.5) * 70, y: ground[1] - rnd() * 8, vx, vy: -(50 + rnd() * 230), age: 0, life: 0.8 + rnd() * 1.3, s: 0.9 + Math.pow(rnd(), 1.5) * 2.1, soot: false, floor: ground[1] + 30, ...chip() });
   }
   function emitGrit(x, y, vx, vy, life, s, floor) {
     if (debris.length > 360) return;
-    debris.push({ x, y, vx, vy, age: 0, life, s, soot: false, floor });
+    debris.push({ x, y, vx, vy, age: 0, life, s, soot: false, floor, ...chip() });
   }
   function emitSoot() {
     if (debris.length > 320) return;
@@ -257,7 +266,7 @@ function startFx2d(FX, fadeOverlay, smokeReach, smokeCloud) {
     while (n > 0) {
       if (n >= 1 || rnd() < n) {
         const side = rnd() < 0.5 ? -1 : 1;
-        emitGrit(ex + side * BODY * (0.88 + rnd() * 0.12), lerp(Y0 + 180, 3070, rnd()), side * (25 + rnd() * 70), -10 + rnd() * 40, 1 + rnd() * 1.2, 0.7 + rnd() * 1, ground[1] + 30);
+        emitGrit(ex + side * BODY * (0.88 + rnd() * 0.12), lerp(Y0 + 180, 3070, rnd()), side * (25 + rnd() * 70), -10 + rnd() * 40, 1 + rnd() * 1.2, 1.1 + Math.pow(rnd(), 1.6) * 2, ground[1] + 30);
       }
       n -= 1;
     }
@@ -267,7 +276,7 @@ function startFx2d(FX, fadeOverlay, smokeReach, smokeCloud) {
       if (n >= 1 || rnd() < n) {
         const b = FX.base[(rnd() * FX.base.length) | 0];
         const dx = b[0] - ground[0], dy = b[1] - ground[1], l = Math.hypot(dx, dy) || 1;
-        emitGrit(b[0], b[1] - 3, (dx / l) * (40 + rnd() * 90), -(60 + rnd() * 140), 0.7 + rnd() * 0.8, 0.5 + rnd() * 1.1, b[1] + 30);
+        emitGrit(b[0], b[1] - 3, (dx / l) * (40 + rnd() * 90), -(60 + rnd() * 140), 0.7 + rnd() * 0.8, 0.8 + rnd() * 1.5, b[1] + 30);
       }
       n -= 1;
     }
@@ -275,13 +284,14 @@ function startFx2d(FX, fadeOverlay, smokeReach, smokeCloud) {
     while (n > 0) {
       if (n >= 1 || rnd() < n) {
         const q = ringTop[(rnd() * ringTop.length) | 0], dx = q[0] - ex, l = Math.abs(dx) || 1;
-        emitGrit(q[0], q[1], (dx / l) * (30 + rnd() * 80), -(40 + rnd() * 110), 0.8 + rnd() * 0.8, 0.5 + rnd() * 0.9, ground[1] + 30);
+        emitGrit(q[0], q[1], (dx / l) * (30 + rnd() * 80), -(40 + rnd() * 110), 0.8 + rnd() * 0.8, 0.8 + rnd() * 1.3, ground[1] + 30);
       }
       n -= 1;
     }
     for (let i = debris.length - 1; i >= 0; i--) {
       const p = debris[i];
       p.age += dt;
+      if (!p.soot) p.rot += p.spin * dt;
       if (p.soot) { p.vx = p.vx * (1 - 0.3 * dt) + (rnd() - 0.5) * 40 * dt; p.vy = p.vy * (1 - 0.2 * dt) - 4 * dt; }
       else { p.vx *= 1 - 0.8 * dt; p.vy = p.vy * (1 - 0.5 * dt) + 380 * dt; }
       p.x += p.vx * dt; p.y += p.vy * dt;
@@ -369,8 +379,10 @@ function startFx2d(FX, fadeOverlay, smokeReach, smokeCloud) {
       tc.globalAlpha = (p.soot ? 0.5 : 0.85) * smooth(0, 0.05, a) * (1 - smooth(0.6, 1, a));
       if (p.soot) { tc.beginPath(); tc.arc(X(p.x), Y(p.y), p.s * k, 0, Math.PI * 2); tc.fill(); }
       else {
-        tc.lineWidth = Math.max(0.8, p.s * k);
-        tc.beginPath(); tc.moveTo(X(p.x), Y(p.y)); tc.lineTo(X(p.x - p.vx * 0.022), Y(p.y - p.vy * 0.022)); tc.stroke();
+        const r = p.s * 1.15 * k, c = Math.cos(p.rot), s = Math.sin(p.rot), cx = X(p.x), cy = Y(p.y);
+        tc.beginPath();
+        for (const [u, v] of CHIPS[p.v]) { const x = u * r * p.ax, y = v * r / p.ax; tc.lineTo(cx + x * c - y * s, cy + x * s + y * c); }
+        tc.closePath(); tc.fill();
       }
     }
     tc.globalCompositeOperation = 'lighter';

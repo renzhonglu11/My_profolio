@@ -374,17 +374,160 @@ function qdArm() {
   return grp("fig-tower", out);
 }
 
-function crewArm() {
-  const floor = { x: TW_X1, y: -11, w: -R - 20 - TW_X1, d: 22, r: 1 };
-  const out = [truss(floor, ARM.crew - 18, 18)];
-  out.push(S(k.slabOf(floor, ARM.crew, 3, P, 2, 0.4), { tone: "mid" }));
-  const posts = [];
-  for (let x = floor.x + 3; x < floor.x + floor.w; x += 8) posts.push(k.rise([x, floor.y + floor.d - 1, 0], ARM.crew + 3, ARM.crew + 14, P));
-  out.push(L(posts.join("") + seg([floor.x + 3, floor.y + floor.d - 1, ARM.crew + 14], [floor.x + floor.w - 1, floor.y + floor.d - 1, ARM.crew + 14]), { tone: "hi" }));
-  const room = { x: -R - 22, y: -15, w: 20, d: 30, r: 1.5 };
-  out.push(S(k.slabOf(room, ARM.crew - 2, 34, P, 3, 0.6), { tone: "hi", crease: "lo" }));
-  out.push(L(k.sideSeam(room, ARM.crew + 26, P, 3), { tone: "lo" }));
-  return grp("fig-tower", out);
+// ---------- crew access arm and crew (own layer: fig-crew.svg) ----------
+// A landing cantilevered off the tower's near face, a walkway truss and a white room docked against the
+// fairing. It sits on the near side of the tower (y 36–72) so the walkway reads in the gap between tower and
+// rocket; the white room runs into the fairing and the rocket layer paints over the part behind its skin.
+// Two astronauts walk from the landing into the white room while a pad technician waves them on. Their
+// motion is CSS inside this layer's own small SVG, so only that image repaints.
+const CZ = ARM.crew;
+const LANDING = { x: -152, y: 37, w: 30, d: 34, r: 1.2 };
+const WALK = { x: -122, y: 48, w: 44, d: 20, r: 1 };
+const ROOM = { x: -80, y: 44, w: 44, d: 28, r: 1.5 };
+const LANE = 61.5, WALK_FROM = -144, WALK_TO = -71, TECH = [-136, 44];
+const STEP = 1.5;                                             // half a stride, along the walkway
+
+// handrail along a straight edge: posts every ~8 units, mid and top rail
+function handrail([x0, y0], [x1, y1], z) {
+  const n = Math.max(1, Math.round(Math.hypot(x1 - x0, y1 - y0) / 8)), posts = [];
+  for (let i = 0; i <= n; i++) posts.push(k.rise([x0 + (x1 - x0) * i / n, y0 + (y1 - y0) * i / n], z, z + 13, P));
+  return L(posts.join("") + seg([x0, y0, z + 13], [x1, y1, z + 13]) + seg([x0, y0, z + 7], [x1, y1, z + 7]), { tone: "hi" });
+}
+// a flat patch on the plane y = const (window, stripe, sign plate)
+const onFaceY = (y, x0, x1, z0, z1, fill) => `<path d="${k.pathOf([at([x0, y, z0]), at([x1, y, z0]), at([x1, y, z1]), at([x0, y, z1])], true)}" fill="${fill}"/>`;
+// a cap on a ball: the points of the sphere within `cone` degrees of direction `dir` (unit, in the xy plane)
+function capOf(c, r, [dx, dy], cone, fill) {
+  const a = cone * RAD, pts = [];
+  for (let i = 0; i < 28; i++) {
+    const t = (i / 28) * Math.PI * 2, u = Math.sin(a) * Math.cos(t), w = Math.sin(a) * Math.sin(t);
+    pts.push(at([c[0] + r * (Math.cos(a) * dx - u * dy), c[1] + r * (Math.cos(a) * dy + u * dx), c[2] + r * w]));
+  }
+  return `<path d="${k.pathOf(pts, true)}" fill="${fill}"/>`;
+}
+
+// One person facing +x (along the walkway), standing on the floor at (x0, y0). Parts are painted far to
+// near: far arm, far leg, near leg, pack, torso, near arm, head. `suit` is the material group class.
+function person(x0, y0, { suit, astronaut }) {
+  const z = CZ;
+  const box = (plan, z0, h, tone = "hi") => S(k.slabOf(plan, z + z0, h, P, 2, 0.3), { tone, crease: "none" });
+  const leg = (dy) => grp(suit, box({ x: x0 - 1.4, y: y0 + dy, w: 2.8, d: 2.2, r: 0.6 }, 2.2, 8.4)) +
+    grp("fig-dark", box({ x: x0 - 1.6, y: y0 + dy - 0.1, w: 3.8, d: 2.4, r: 0.6 }, 0, 2.4));
+  const arm = (dy) => grp(suit, box({ x: x0 - 1.1, y: y0 + dy, w: 2.2, d: 1.6, r: 0.6 }, 10.6, 7.8)) +
+    grp("fig-dark", box({ x: x0 - 1, y: y0 + dy, w: 2, d: 1.6, r: 0.5 }, 9.2, 1.6));
+  const torso = { x: x0 - 2.6, y: y0 - 3.2, w: 5.2, d: 6.4, r: 1.2 };
+  const head = [x0 + 0.2, y0, z + 22];
+  const parts = {
+    farArm: arm(-4.8), farLeg: leg(-2.5), nearLeg: leg(0.3), nearArm: arm(3.2),
+    body: [
+      astronaut ? grp("fig-white", box({ x: x0 - 5, y: y0 - 2.6, w: 2.6, d: 5.2, r: 0.6 }, 11.2, 7.6)) : "",
+      grp(suit, box(torso, 10.2, 8.6)),
+      // a band across the chest: the mission stripe on a suit, a reflective strip on coveralls
+      onFaceY(y0 + 3.2, x0 - 2.5, x0 + 2.6, z + 15.2, z + 16.4, astronaut ? "#F26A21" : "#F4F1E8"),
+      grp("fig-dark", S(k.cylinder(x0 + 0.1, y0, 1.6, z + 18.6, 1.3, P, 16), { tone: "hi", crease: "none" })),
+    ].join(""),
+    head: astronaut
+      ? grp("fig-white", S(G.sphereOf(head, 3.2, P), { tone: "hi" })) + capOf(head, 3.2, [1, 0], 52, "#2C2A27") + capOf([head[0], head[1] + 0.5, head[2] + 0.7], 3.2, [0.95, 0.3], 24, "rgba(214,176,108,.55)")
+      : `<path d="${G.sphereOf([head[0], head[1], head[2] - 0.6], 2.5, P).fill}" fill="#D7A57E"/>` +
+        grp("fig-white", S(k.cylinder(head[0], head[1], 3.2, z + 22.2, 0.5, P, 20), { tone: "hi", crease: "none" }) + S(G.sphereOf([head[0] - 0.1, head[1], z + 22.7], 2.6, P), { tone: "hi" })),
+  };
+  return parts;
+}
+
+// a walker: legs and arms swing on alternate phases, the body bobs; the whole group walks the lane
+function walker(id, offset) {
+  const p = person(WALK_FROM, LANE, { suit: "fig-white", astronaut: true });
+  return `<g class="walker" style="animation-delay:${offset}s;transform:translate(var(--rest-${id}))"><g class="sb" style="animation-delay:${offset}s">${p.farArm}</g><g class="sa" style="animation-delay:${offset}s">${p.farLeg}</g><g class="sb" style="animation-delay:${offset}s">${p.nearLeg}</g><g class="bob" style="animation-delay:${offset}s">${p.body}${p.head}</g><g class="sa" style="animation-delay:${offset}s">${p.nearArm}</g></g>`;
+}
+
+function crewLayer() {
+  const far = [], near = [];
+  // landing: beam on the tower face, knee braces, grated deck
+  far.push(grp("fig-tower", [
+    S(k.slabOf({ x: -151, y: 35.6, w: 28, d: 1.4, r: 0.3 }, CZ - 14, 14, P, 2), { tone: "mid", crease: "lo" }),
+    ...[-148, -126].map((x) => S(k.slabOf({ x: x - 2, y: 35.6, w: 4, d: 1.4, r: 0.3 }, CZ - 54, 7, P, 2), { tone: "mid", crease: "lo" })),
+    L([-148, -126].map((x) => seg([x, 36.6, CZ - 50], [x, LANDING.y + LANDING.d - 4, CZ - 5])).join(""), { tone: "hi" }),
+    S(k.slabOf(LANDING, CZ - 5, 5, P, 3, 0.5), { tone: "mid", crease: "lo" }),
+    L(k.sideSeam(LANDING, CZ - 2.5, P, 3), { tone: "faint" }),
+    ...Array.from({ length: 5 }, (_, i) => L(k.lineOnTop([LANDING.x + 5 + i * 5, LANDING.y + 1], [LANDING.x + 5 + i * 5, LANDING.y + LANDING.d - 1], CZ, P), { tone: "faint" })),
+  ]));
+  // flood lamp on the landing's far corner, aimed down the walkway
+  far.push(grp("fig-tower", L(k.rise([-150, 39], CZ, CZ + 24, P), { tone: "hi" })));
+  far.push(grp("fig-steel", S(k.slabOf({ x: -152, y: 37.2, w: 4.4, d: 3.6, r: 0.6 }, CZ + 23, 4, P, 2, 0.3), { tone: "hi", crease: "none" })));
+  far.push(`<path d="${k.pathOf([at([-147.6, 37.6, CZ + 23.6]), at([-147.6, 40.4, CZ + 23.6]), at([-147.6, 40.4, CZ + 26.4]), at([-147.6, 37.6, CZ + 26.4])], true)}" fill="#FFF3D2"/>`);
+  // arm hinge: a post on the landing's corner with two collars
+  far.push(grp("fig-tower", [
+    S(k.cylinder(-122.5, 46, 2.4, CZ - 28, 44, P, 20), { tone: "hi", crease: "none" }),
+    ...[CZ - 10, CZ + 9].map((z) => S(k.cylinder(-122.5, 46, 3.3, z, 1.8, P, 20), { tone: "hi", crease: "none" })),
+  ]));
+  // walkway: a box truss of two edge girders (bottom chords, posts and diagonals), then the deck and grating
+  const chord = (y) => S(k.slabOf({ x: WALK.x, y, w: WALK.w, d: 2, r: 0.4 }, CZ - 22, 3, P, 2, 0.3), { tone: "mid", crease: "lo" });
+  const yNear = WALK.y + WALK.d - 1, webs = [];
+  for (let x = WALK.x; x < WALK.x + WALK.w - 1; x += 11) {
+    const x1 = Math.min(x + 11, WALK.x + WALK.w);
+    webs.push(seg([x, yNear, CZ - 19], [x1, yNear, CZ - 3]), k.rise([x1, yNear], CZ - 19, CZ - 3, P));
+  }
+  far.push(grp("fig-tower", [chord(WALK.y), chord(WALK.y + WALK.d - 2), L(webs.join(""), { tone: "hi" }), S(k.slabOf(WALK, CZ - 3, 3, P, 2, 0.4), { tone: "mid", crease: "lo" }),
+    L(Array.from({ length: 8 }, (_, i) => k.lineOnTop([WALK.x + 4 + i * 5, WALK.y + 1], [WALK.x + 4 + i * 5, WALK.y + WALK.d - 1], CZ, P)).join(""), { tone: "faint" })]));
+  // rails behind the lane: the landing's back and side, the walkway's far side
+  far.push(grp("fig-tower", [
+    handrail([-151, 38], [-151, 70], CZ), handrail([-151, 38], [-123, 38], CZ), handrail([-123, 38], [-123, 47], CZ),
+    handrail([-121, 49], [-80, 49], CZ),
+  ]));
+  // the pad technician at the back of the landing, waving the crew on
+  {
+    const t = person(...TECH, { suit: "fig-orange", astronaut: false });
+    const shoulder = at([TECH[0], TECH[1] + 4, CZ + 18]).map(r1);
+    far.push(`<g class="tech">${t.farArm}${t.farLeg}${t.nearLeg}${t.body}${t.head}<g class="wave" style="--sx:${shoulder[0]}px;--sy:${shoulder[1]}px">${t.nearArm}</g></g>`);
+  }
+  // rails and toe boards in front of the lane
+  near.push(grp("fig-tower", [
+    handrail([-121, 67], [-80, 67], CZ), handrail([-151, 70], [-122, 70], CZ), handrail([-122, 70], [-122, 67], CZ),
+    S(k.slabOf({ x: -121, y: 67, w: 41, d: 0.8, r: 0.2 }, CZ, 2.2, P, 1), { tone: "mid", crease: "none" }),
+    S(k.slabOf({ x: -151, y: 70, w: 29, d: 0.8, r: 0.2 }, CZ, 2.2, P, 1), { tone: "mid", crease: "none" }),
+  ]));
+  // white room: dark underframe, white cabin, roof with an air handler, a window and the orange band
+  const yN = ROOM.y + ROOM.d;
+  near.push(grp("fig-tower", S(k.slabOf(k.insetPlan(ROOM, 1.5), CZ - 11, 8, P, 3, 0.5), { tone: "mid", crease: "lo" })));
+  near.push(grp("fig-white", [
+    S(k.slabOf(ROOM, CZ - 3, 43, P, 3, 0.6), { tone: "hi", crease: "lo" }),
+    L(k.sideSeam(ROOM, CZ + 2, P, 3) + k.sideSeam(ROOM, CZ + 37, P, 3), { tone: "faint" }),
+    onFaceY(yN, ROOM.x + 1.5, ROOM.x + ROOM.w, CZ + 31, CZ + 34, "#F26A21"),
+    onFaceY(yN, -73, -59, CZ + 12, CZ + 28, "#8F9296"), onFaceY(yN, -72.2, -59.8, CZ + 12.8, CZ + 27.2, "#2B2E33"),
+    `<path d="${k.pathOf([at([-71, yN, CZ + 13]), at([-67, yN, CZ + 13]), at([-62, yN, CZ + 27]), at([-66, yN, CZ + 27])], true)}" fill="rgba(255,255,255,.14)"/>`,
+    onFaceY(yN, -55, -49, CZ + 17, CZ + 24, "#F26A21"), onFaceY(yN, -54, -50, CZ + 20, CZ + 20.6, "#FBE3D2"),
+    S(k.slabOf({ x: ROOM.x - 2, y: ROOM.y - 2, w: ROOM.w + 4, d: ROOM.d + 4, r: 2 }, CZ + 40, 2.5, P, 3, 0.4), { tone: "hi", crease: "lo" }),
+  ]));
+  near.push(grp("fig-steel", [
+    S(k.slabOf({ x: -74, y: 50, w: 13, d: 12, r: 1 }, CZ + 42.5, 6, P, 2, 0.4), { tone: "hi", crease: "lo" }),
+    L(k.ring(-67.5, 56, 4, CZ + 48.5, P, 24), { tone: "mid" }),
+    D([at([-67.5, 56, CZ + 48.5])], { size: 0.7, tone: "mid" }),
+  ]));
+
+  // crop: everything above sits inside these corners
+  const box = [];
+  for (const [p, z0, z1] of [[LANDING, CZ - 56, CZ + 30], [WALK, CZ - 23, CZ + 30], [{ x: ROOM.x - 2, y: ROOM.y - 2, w: ROOM.w + 4, d: ROOM.d + 4 }, CZ - 12, CZ + 50]])
+    for (const x of [p.x, p.x + p.w]) for (const y of [p.y, p.y + p.d]) for (const z of [z0, z1]) box.push(at([x, y, z]));
+  const pad = 4;
+  const x0 = Math.floor(Math.min(...box.map((q) => q[0])) - pad), y0 = Math.floor(Math.min(...box.map((q) => q[1])) - pad);
+  const crop = [x0, y0, Math.ceil(Math.max(...box.map((q) => q[0])) + pad) - x0, Math.ceil(Math.max(...box.map((q) => q[1])) + pad) - y0];
+
+  // motion: the walk vector and stride in screen units, from the camera
+  const o = at([0, 0, 0]), ax = at([1, 0, 0]);
+  const v = [ax[0] - o[0], ax[1] - o[1]], len = WALK_TO - WALK_FROM;
+  const tr = (s) => `${r1(v[0] * s)}px,${r1(v[1] * s)}px`;
+  const css = `.fig-crew{--rest-1:${tr(len * 0.3)};--rest-2:${tr(len * 0.62)}}
+.walker{animation:walk 28s linear infinite}
+.sa,.sb{animation:step 1.1s ease-in-out infinite}.sb{animation-name:step-b}
+.bob{animation:bob .55s ease-in-out infinite alternate}
+.wave{animation:wave 9s ease-in-out infinite}
+@keyframes walk{0%{transform:translate(0,0);opacity:0}4%{opacity:1}82%,100%{transform:translate(${tr(len)});opacity:1}}
+@keyframes step{0%,100%{transform:translate(${tr(-STEP)})}50%{transform:translate(${tr(STEP)})}}
+@keyframes step-b{0%,100%{transform:translate(${tr(STEP)})}50%{transform:translate(${tr(-STEP)})}}
+@keyframes bob{from{transform:translate(0,0)}to{transform:translate(0,-.6px)}}
+@keyframes wave{0%,52%,94%,100%{transform:none}60%,86%{transform:translate(var(--sx),var(--sy)) rotate(150deg) translate(calc(-1 * var(--sx)),calc(-1 * var(--sy)))}66%,78%{transform:translate(var(--sx),var(--sy)) rotate(132deg) translate(calc(-1 * var(--sx)),calc(-1 * var(--sy)))}72%{transform:translate(var(--sx),var(--sy)) rotate(162deg) translate(calc(-1 * var(--sx)),calc(-1 * var(--sy)))}}
+@media (prefers-reduced-motion:reduce){.walker,.sa,.sb,.bob,.wave{animation:none}}`;
+  const body = `<style>${css}</style><g class="fig-crew">${far.join("")}${walker(1, 0)}${walker(2, -14)}${near.join("")}</g>`;
+  return { body, crop };
 }
 
 function chopstick(side) {
@@ -833,7 +976,6 @@ const back = [
   tower(),
   pipes(),
   qdArm(),
-  crewArm(),
   carriage(),
   chopstick(-1),
   ...legsAt.filter(({ a }) => facing(a) <= 0).map(mountPier),
@@ -866,6 +1008,8 @@ const svg = (body, label) => k.figureSvg({ width: W, height: H, label, body });
 writeFileSync(join(HERE, "fig-back.svg"), svg(back, "Launch pad, tower and rear supports."));
 writeFileSync(join(HERE, "fig-mount.svg"), svg(mount, "Front piers, launch table and rear hold-down clamps."));
 writeFileSync(join(HERE, "fig-beacon-light.svg"), mastBeaconLight());
+const crew = crewLayer();
+writeFileSync(join(HERE, "fig-crew.svg"), `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${crew.crop.join(" ")}">${crew.body}</svg>`);
 writeFileSync(join(HERE, "fig-front.svg"), svg(front, "A two-stage rocket standing on the mount, nine engines under its skirt."));
 
 const pct = ([x, y]) => [+(x / W * 100).toFixed(3), +(y / H * 100).toFixed(3)];
@@ -877,6 +1021,7 @@ const meta = {
   trenchEnd: pct(at([96, 0, 0])),
   beacon: pct(at(beaconSeat)),
   noseTip: pct(at([0, 0, Z.tip])),
+  crew: { crop: crew.crop, at: pct(crew.crop), width: +(crew.crop[2] / W * 100).toFixed(3) },
   rocketR: +(R / W * 100).toFixed(3),
   engines: ENGINES.map(([x, y]) => pct(at([x, y, SKIRT_BOT - BELL_LEN]))),
 };

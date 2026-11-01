@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="470" height="43" viewBox="0 0 470 43">
+    <defs>
+      <radialGradient id="spill">
+        <stop stop-color="#FF7457" stop-opacity=".78"/><stop offset=".32" stop-color="#FF5542" stop-opacity=".5"/>
+        <stop offset=".67" stop-color="#FF5143" stop-opacity=".13"/><stop offset="1" stop-color="#FF5143" stop-opacity="0"/>
+      </radialGradient>
+      <radialGradient id="filament" cx=".43" cy=".63" r=".67">
+        <stop stop-color="#FFF2C8"/><stop offset=".38" stop-color="#FFBB83"/>
+        <stop offset=".78" stop-color="#FF694F" stop-opacity=".72"/><stop offset="1" stop-color="#FF5847" stop-opacity=".12"/>
+      </radialGradient>
+      <linearGradient id="reflected" x2="0" y2="1">
+        <stop stop-color="#FF9879" stop-opacity=".8"/><stop offset="1" stop-color="#F25A46" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <g transform="translate(163.1 24.1)">
+      <ellipse cy="-7" rx="21" ry="16" fill="url(#spill)"/>
+      <path d="M-5.6 -2.5V-9.8C-5.6 -12.4 -3.4 -14 0 -14S5.6 -12.4 5.6 -9.8V-2.5C5.6 .9 -5.6 .9 -5.6 -2.5Z" fill="url(#filament)"/>
+      <path d="M-5.5 -8.3C-3.5 -5.8 3.5 -5.8 5.5 -8.3V-6.2C3.4 -3.2 -3.4 -3.2 -5.5 -6.2Z" fill="#FFF0C9" opacity=".87"/>
+      <path d="M-6.8 -2.7C-6.2 1.4 4.9 2.8 6.8 -2C5.9 3.3 -6.6 3.4 -6.8 -2.7Z
+               M-2.4 5L-.5 5.7L-1.6 15Z" fill="url(#reflected)"/>
+    </g>
+  </svg>

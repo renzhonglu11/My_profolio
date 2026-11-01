@@ -5,8 +5,12 @@
   var year = document.getElementById("year");
   if (year) year.textContent = new Date().getFullYear();
 
-  // Modern Chrome / Edge / Safari pan the figure in CSS (see .fig in site.css).
-  if (window.CSS && CSS.supports && CSS.supports("animation-timeline: view()")) return;
+  // Chrome / Edge pan the figure in CSS (see .fig in site.css). Safari (WebKit,
+  // detected by GestureEvent) leaves most of the tall figure unpainted under the
+  // CSS-driven pan, so it is panned from JS on its own layer (.wk in site.css).
+  var webkit = typeof window.GestureEvent !== "undefined";
+  if (webkit) document.documentElement.classList.add("wk");
+  else if (window.CSS && CSS.supports && CSS.supports("animation-timeline: view()")) return;
   var rail = document.querySelector("[data-rail]");
   var fig = rail && rail.querySelector("[data-fig]");
   if (!fig) return;

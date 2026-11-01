@@ -85,7 +85,7 @@ function startFx(FX) {
   const atlas = document.createElement('canvas'); atlas.width = atlas.height = TILE * GRID;
   const ac = atlas.getContext('2d');
   const tileAt = (i) => [(i % GRID) * TILE, Math.floor(i / GRID) * TILE];
-  const PUFFS = 10, ROUND = 10, STREAK = 11, DOT = 12;
+  const PUFFS = 10, ROUND = 10, STREAK = 11, DOT = 12, CHUNK = 13, CHUNKS = 3;
   // irregular "cauliflower" smoke puffs built from many sub-blobs
   for (let i = 0; i < PUFFS; i++) {
     const [ox, oy] = tileAt(i);
@@ -114,6 +114,16 @@ function startFx(FX) {
     const g = ac.createRadialGradient(ox + 64, oy + 64, 0, ox + 64, oy + 64, 58);
     g.addColorStop(0, 'rgba(255,255,255,1)'); g.addColorStop(0.6, 'rgba(255,255,255,.9)'); g.addColorStop(1, 'rgba(255,255,255,0)');
     ac.fillStyle = g; ac.fillRect(ox, oy, TILE, TILE);
+  }
+  // falling grit: jagged chips, each tile a different irregular polygon with a soft rim
+  for (let i = 0; i < CHUNKS; i++) {
+    const [ox, oy] = tileAt(CHUNK + i), n = 6 + ((rnd() * 4) | 0), a0 = rnd() * Math.PI * 2;
+    ac.save(); ac.filter = 'blur(1.5px)'; ac.fillStyle = '#fff'; ac.beginPath();
+    for (let j = 0; j < n; j++) {
+      const a = a0 + ((j + (rnd() - 0.5) * 0.7) / n) * Math.PI * 2, r = 30 + rnd() * 26;
+      ac.lineTo(ox + 64 + Math.cos(a) * r, oy + 64 + Math.sin(a) * r * (0.6 + rnd() * 0.4));
+    }
+    ac.closePath(); ac.fill(); ac.restore();
   }
   const atlasTex = new THREE.CanvasTexture(atlas);
   atlasTex.flipY = false;
@@ -260,15 +270,19 @@ function startFx(FX) {
     const a = -Math.PI * (0.15 + rnd() * 0.7), v = 160 + rnd() * 260;
     sparks.push({ x, y, vx: Math.cos(a) * v * 0.6 + tdir[0] * 40 * rnd(), vy: Math.sin(a) * v, age: 0, life: 0.5 + rnd() * 0.7 });
   }
-  // black grit: kind 0 = thrown off the pad (falls fast), 1 = soot drifting up, 2 = flakes falling down the rocket
+  // black grit: kind 0 = thrown off the pad (falls fast), 1 = soot drifting up, 2 = flakes falling down the rocket.
+  // Falling grit is an irregular chip (one of the CHUNK tiles, stretched) that tumbles as it falls.
   function emitGrit(kind, x, y, vx, vy, life, s, floor) {
     if (grit.length > 1200) return;
-    grit.push({ kind, x, y, vx, vy, age: 0, life, s, floor });
+    grit.push({
+      kind, x, y, vx, vy, age: 0, life, s, floor,
+      tile: CHUNK + ((rnd() * CHUNKS) | 0), rot: rnd() * Math.PI * 2, spin: (rnd() - 0.5) * 9, ax: 0.7 + rnd() * 0.6,
+    });
   }
   function emitFlake(zMin, zMax) {
     const z = lerp(zMin, zMax, rnd()), side = rnd() < 0.5 ? -1 : 1;
     const hw = radiusAt(z) * HW;
-    emitGrit(2, ex + side * hw * (0.85 + rnd() * 0.15), yAt(z), side * (12 + rnd() * 45), -15 + rnd() * 25, 14 + rnd() * 6, 0.9 + rnd() * 1.2, ground[1] + 30);
+    emitGrit(2, ex + side * hw * (0.85 + rnd() * 0.15), yAt(z), side * (12 + rnd() * 45), -15 + rnd() * 25, 14 + rnd() * 6, 1.3 + Math.pow(rnd(), 1.6) * 2.4, ground[1] + 30);
   }
   // Cryogenic vapour venting on the side away from the tower, like a rocket being fuelled: a dense column
   // clings to the body from a vent just below the interstage and cascades down to the pad, widening as it
@@ -361,7 +375,7 @@ function startFx(FX) {
     each(30, dt, () => {   // thrown off the pad by the blast
       const side = rnd() < 0.5 ? -1 : 1;
       const vx = wide ? side * (80 + rnd() * 280) : (rnd() - 0.5) * 220 + tdir[0] * 90;
-      emitGrit(0, ground[0] + (rnd() - 0.5) * 70, ground[1] - rnd() * 8, vx, -(50 + rnd() * 230), 0.8 + rnd() * 1.3, 0.6 + rnd() * 1.5, ground[1] + 30);
+      emitGrit(0, ground[0] + (rnd() - 0.5) * 70, ground[1] - rnd() * 8, vx, -(50 + rnd() * 230), 0.8 + rnd() * 1.3, 0.9 + Math.pow(rnd(), 1.5) * 2.1, ground[1] + 30);
     });
     each(wide ? 18 : 10, dt, () => {   // fine soot rising with the smoke
       const side = rnd() < 0.5 ? -1 : 1;
@@ -373,15 +387,15 @@ function startFx(FX) {
     each(9, dt, () => {   // kicked off the pad's outer edge
       const b = FX.base[(rnd() * FX.base.length) | 0];
       const dx = b[0] - ground[0], dy = b[1] - ground[1], l = Math.hypot(dx, dy) || 1;
-      emitGrit(0, b[0], b[1] - 3, (dx / l) * (40 + rnd() * 90), -(60 + rnd() * 140), 0.7 + rnd() * 0.8, 0.5 + rnd() * 1.1, b[1] + 30);
+      emitGrit(0, b[0], b[1] - 3, (dx / l) * (40 + rnd() * 90), -(60 + rnd() * 140), 0.7 + rnd() * 0.8, 0.8 + rnd() * 1.5, b[1] + 30);
     });
     each(5, dt, () => {   // and off the mount ring
       const q = ringTop[(rnd() * ringTop.length) | 0], dx = q[0] - ex, l = Math.abs(dx) || 1;
-      emitGrit(0, q[0], q[1], (dx / l) * (30 + rnd() * 80), -(40 + rnd() * 110), 0.8 + rnd() * 0.8, 0.5 + rnd() * 0.9, ground[1] + 30);
+      emitGrit(0, q[0], q[1], (dx / l) * (30 + rnd() * 80), -(40 + rnd() * 110), 0.8 + rnd() * 0.8, 0.8 + rnd() * 1.3, ground[1] + 30);
     });
     for (let i = grit.length - 1; i >= 0; i--) {
       const p = grit[i];
-      p.age += dt;
+      p.age += dt; p.rot += p.spin * dt;
       if (p.kind === 1) { p.vx = p.vx * (1 - 0.3 * dt) + (rnd() - 0.5) * 40 * dt; p.vy = p.vy * (1 - 0.2 * dt) - 4 * dt; }
       else if (p.kind === 2) { p.vx = p.vx * (1 - 0.6 * dt) + (rnd() - 0.5) * 70 * dt; p.vy = p.vy * (1 - 1.4 * dt) + 260 * dt; }
       else { p.vx *= 1 - 0.8 * dt; p.vy = p.vy * (1 - 0.5 * dt) + 380 * dt; }
@@ -481,9 +495,8 @@ function startFx(FX) {
       if (p.kind === 1) {
         gritB.add(p.x, p.y, p.s * 2, p.s * 2, 0, INK[0], INK[1], INK[2], 0.5 * smooth(0, 0.05, a) * (1 - smooth(0.6, 1, a)), DOT);
       } else {
-        const sp = Math.hypot(p.vx, p.vy), len = sp * 0.022 + p.s * 2;
-        const alpha = 0.85 * smooth(0, 0.05, a) * (1 - smooth(p.kind === 2 ? 0.85 : 0.6, 1, a));
-        gritB.add(p.x - p.vx * 0.011, p.y - p.vy * 0.011, len, Math.max(1.2, p.s * 1.6), Math.atan2(p.vy, p.vx), INK[0], INK[1], INK[2], alpha, STREAK);
+        const alpha = 0.9 * smooth(0, 0.05, a) * (1 - smooth(p.kind === 2 ? 0.85 : 0.6, 1, a)), d = p.s * 2.3;
+        gritB.add(p.x, p.y, d * p.ax, d / p.ax, p.rot, INK[0], INK[1], INK[2], alpha, p.tile);
       }
     }
     gritB.flush();
@@ -564,7 +577,7 @@ function startFallback() {
   const [, y, , height] = window.FIGURE.fx.rect;
   for (const canvas of [fire, smoke]) fadeFigureCanvas(canvas, y - 360, height + 360);
   const script = document.createElement('script');
-  script.src = 'js/fx-2d.js?v=viewport-smoke';
+  script.src = 'js/fx-2d.js?v=grit-chips';
   script.onload = () => { if (typeof window.startFx2d === 'function') window.startFx2d(window.FIGURE.fx, fadeOverlay, smokeReach, smokeCloud); };
   document.head.appendChild(script);
 }

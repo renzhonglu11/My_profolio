@@ -28,6 +28,7 @@ Keep it that way unless the owner asks otherwise.
 | `assets/figure-back.svg` | **Generated.** Pad, tower, rear arms and rear piers. | No — regenerate |
 | `assets/figure-mount.svg` | **Generated.** Stationary front piers, launch deck and rear clamps above the flame. | No — regenerate |
 | `assets/figure-front.svg` | **Generated.** Engines, rocket, front clamps, near catch-arm. | No — regenerate |
+| `assets/figure-crew.svg` | **Generated.** Crew access arm at the fairing (landing, walkway, white room) with two walking astronauts and a waving technician; a small cropped layer whose CSS motion repaints only itself. | No — regenerate |
 | `assets/` | Also where `resume.pdf` and project screenshots go. | Add files |
 | `figure-src/` | Source that draws the SVG layers (Node, no dependencies). | Only to change the drawing |
 | `.nojekyll` | Tells GitHub Pages to serve files as-is. | Keep |
@@ -73,7 +74,7 @@ Keep it that way unless the owner asks otherwise.
   without that, `js/main.js` sets `--p` from `scroll`. Keep the
   `data-rail` / `data-fig` attributes.
 - **Layer order matters:** inside `.fig`:
-  `figure-back.svg` (includes the tower's red lens and mount) → `.mast-light` →
+  `figure-back.svg` (includes the tower's red lens and mount) → `.mast-light` → `.fig-crew` →
   `canvas[data-fx="fire"]` → `figure-mount.svg` → `figure-front.svg` → `.fig-name`
   text. The front piers and deck occlude the flame in both renderers.
   After `.stick`, still inside `.rail`, comes
@@ -138,7 +139,10 @@ rectangles and `.fig-name` positions in `index.html` (values are printed in
 `js/figure-data.js`: `rect`, `name.at`, `name.sub`). In `build.mjs`, `mastBeacon()`
 draws the fixture and `mastBeaconLight()` draws the illuminated glass, halo
 and reflected light. The `.mast-light` animation varies their brightness together
-and holds it steady under reduced motion.
+and holds it steady under reduced motion. `crewLayer()` draws the crew access arm and its crew into
+`fig-crew.svg`; `make-assets.mjs` crops it and prints its `left/top/width` percentages (also in
+`fig.json` → `crew`), which go on `<img class="fig-crew">` in `index.html`. The walk, steps, bob and
+wave are CSS keyframes inside that SVG and stop under reduced motion.
 
 ## 6. Before shipping — checklist
 
