@@ -15,6 +15,8 @@ h1,h2{word-spacing:.14em}
 .fig{position:relative;width:100%;aspect-ratio:470 / 3520;container-type:inline-size;transform:translateY(calc((100vh - 100%) * var(--p)))}
 .fig-layer{position:absolute;inset:0;width:100%;height:100%;display:block}
 .mast-light{position:absolute;top:0;left:0;width:100%;height:auto;display:block;opacity:.58}
+/* crew access arm and its walking crew: a cropped layer over the tower, under the rocket (place from figure-src/fig.json crew.at / crew.width) */
+.fig-crew{position:absolute;height:auto;display:block;pointer-events:none}
 @media (prefers-reduced-motion:no-preference){
   .mast-light{animation:mast-light 3.6s ease-in-out infinite}
   @keyframes mast-light{
@@ -63,6 +65,22 @@ h1,h2{word-spacing:.14em}
 .project-detail p{margin:0 0 12px}.project-detail p:last-child{margin-bottom:0}
 .project-date{font-family:'JetBrains Mono',monospace;font-size:11px;color:#77736E}
 .project-card [hidden],.project-dialog [hidden]{display:none !important}
+/* Scan aids: key phrases turn charcoal, one accent highlighter per section, role-type badges and diamond bullets (the HUD marker). */
+.page p strong,.xp-points strong{color:#1E1F22;font-weight:600}
+.hl{color:#1E1F22;font-weight:600;background:linear-gradient(transparent 60%,color-mix(in srgb,var(--accent) 28%,transparent) 0);padding:0 .08em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.facts{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;row-gap:6px;font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#1E1F22}
+.facts li+li::before{content:"";display:inline-block;width:5px;height:5px;margin:0 11px 2px;border:1.2px solid var(--accent);transform:rotate(45deg)}
+.xp-meta{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
+.xp-kind{flex:none;padding:1px 8px;border-radius:999px;border:1px solid rgba(30,31,34,.16);font-size:10px;color:#5A5C62}
+.xp-kind.work{border-color:transparent;background:color-mix(in srgb,var(--accent) 14%,transparent);color:var(--ink)}
+.xp-points{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:6px;font-size:15px;line-height:1.55;color:#4A4C52}
+.xp-points li{position:relative;padding-left:17px}
+.xp-points li::before{content:"";position:absolute;left:1px;top:.6em;width:5px;height:5px;border:1.2px solid var(--accent);transform:rotate(45deg)}
+.xp-note{margin:0;font-size:14px;color:#6A6C72}
+.skill-alias{color:#8A8C90}
+.status-dot{display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:var(--accent);vertical-align:1px}
+.project-metric{align-self:flex-start;margin:0;padding:4px 10px;border-radius:6px;background:color-mix(in srgb,var(--accent) 13%,transparent);color:var(--ink);font-size:13px;font-weight:500;line-height:1.45}
+.page .project-metric strong{color:inherit;font-weight:700}
 /* Native dialog keeps keyboard focus inside the player and supports Escape. */
 html.project-dialog-open{overflow:hidden}
 .project-dialog{--ink:#AE4C18;box-sizing:border-box;width:min(820px,calc(100% - 32px));max-width:none;max-height:calc(100dvh - 32px);padding:0;border:1px solid rgba(255,255,255,.6);border-radius:18px;background:#F4F3F0;color:#1E1F22;box-shadow:0 24px 100px rgba(0,0,0,.3);font-family:'Inter Tight','Helvetica Neue',Arial,sans-serif;overflow-y:auto;overscroll-behavior:contain}
@@ -86,6 +104,11 @@ html.project-dialog-open{overflow:hidden}
   .project-card{padding:16px;gap:10px}
   .project-card h3{font-size:21px}
   .project-summary{font-size:14px}
+  .facts{flex-direction:column;row-gap:4px}
+  .facts li::before,.facts li+li::before{content:"";display:inline-block;width:5px;height:5px;margin:0 10px 2px 1px;border:1.2px solid var(--accent);transform:rotate(45deg)}
+  .xp-meta{flex-direction:column;align-items:flex-start;gap:5px}
+  .xp-kind{order:-1}
+  .xp-points li{padding-left:14px}
   .project-actions{column-gap:12px}
   .project-action{min-height:40px}
   .project-demo{order:-1;flex-basis:100%;justify-content:flex-start}
@@ -97,11 +120,11 @@ html.project-dialog-open{overflow:hidden}
 }
 @media(prefers-reduced-motion:reduce){.project-toggle svg{transition:none}}
 @media (min-width:1181px){
-  .lg:has(> .main > .card){max-width:1560px;grid-template-columns:minmax(0,1fr) calc(var(--figw) - 64px) minmax(0,1fr)}
-  .cL.main:has(> .card){padding-inline:20px 12px}
-  .cX.main:has(> .card){padding-inline:12px 20px}
-  .main > .card{max-width:520px !important}
-  .hero-intro{width:min(510px,calc(100% + 90px))}
+  /* the columns meet at the page centre and pad out to the figure's visible edges (traced from the layers: tower left ~17%, hull right ~78% of --figw), so text, callouts and cards sit ~35px off the tower and the hull in every section */
+  .lg{max-width:1560px;grid-template-columns:minmax(0,1fr) 0 minmax(0,1fr)}
+  .cL{padding-inline:24px calc(var(--figw) * .33 + 36px)}
+  .cX{padding-inline:calc(var(--figw) * .28 + 32px) 24px}
+  .main > *{max-width:560px !important}
 }
 .btn{transition:transform .15s ease}.btn:hover{transform:translateY(-1px)}
 .navlink{color:#55575C}.navlink:hover{color:#111214}
@@ -128,6 +151,14 @@ html.project-dialog-open{overflow:hidden}
 .hud{position:fixed;right:22px;top:50%;transform:translateY(-50%);z-index:1;display:flex;flex-direction:column;align-items:flex-end;gap:12px;font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.08em;color:#3A3C40;pointer-events:none}
 .rl{position:relative;width:1px;height:220px;background:rgba(30,31,34,.25);margin-right:4px}
 .mk{position:absolute;left:-5px;top:0;width:9px;height:9px;border:1.5px solid var(--accent);transform:rotate(45deg)}
+/* 1181–1719px: right-column content reaches the viewport edge and would cover the HUD; turn its readouts vertical so it fits a ~15px gutter the cards keep clear */
+@media (min-width:1181px) and (max-width:1719px){
+  .hud{right:14px;align-items:center;gap:10px}
+  .hud>div:not(.rl){writing-mode:vertical-rl}
+  .hud .alt,.hud .tm{display:inline-block;inline-size:3ch;text-align:center}
+  .rl{margin-right:0}
+  .cX{padding-right:44px}
+}
 @property --alt{syntax:'<integer>';inherits:false;initial-value:120}
 @property --tm{syntax:'<integer>';inherits:false;initial-value:600}
 .alt::after{content:"120"}
@@ -195,3 +226,5 @@ html{scroll-behavior:auto}
 .fig-name b{color:#F26A21;font-weight:800}
 .fig-name-sub{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:1.106cqw;letter-spacing:0.128cqw;color:#55575C}
 .ext-arrow{display:inline-block;width:.7em;height:.7em;margin-left:.1em;vertical-align:baseline;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 3h8v8M13 3 3 13'/%3E%3C/svg%3E") no-repeat center/contain;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 3h8v8M13 3 3 13'/%3E%3C/svg%3E") no-repeat center/contain}
+/* Safari: pan driven by js/main.js; the figure gets its own layer so WebKit repaints its tiles as it moves */
+.wk .fig{animation:none;will-change:transform}
